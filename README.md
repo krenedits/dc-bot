@@ -6,7 +6,7 @@
 npm install
 ```
 
-.env-et megfelelő tokennel ellátni.
+_.env-et megfelelő tokennel ellátni._
 
 ## Indítás
 

@@ -14,9 +14,7 @@ import {
     VoiceConnectionStatus,
 } from '@discordjs/voice';
 import names from '../../utils/names.js';
-
-const MIN_TIME_BETWEEN_APPERANCES = 3 * 60 * 1000;
-const MAX_TIME_BETWEEN_APPERANCES = 5 * 60 * 1000;
+import introMap from '../../utils/introMap.js';
 
 export const connectToVoiceChannel = (
     channel: VoiceBasedChannel,
@@ -52,15 +50,7 @@ export const disconnect = (member: GuildMember, channel: VoiceBasedChannel, clie
     });
 };
 
-const playMusic = (channel: VoiceBasedChannel, client: TClient) => {
-    connectToVoiceChannel(channel, client, '/../../sounds/brendon.mp3');
-    const randomInterval =
-        Math.floor(Math.random() * (MAX_TIME_BETWEEN_APPERANCES - MIN_TIME_BETWEEN_APPERANCES + 1)) +
-        MIN_TIME_BETWEEN_APPERANCES;
-    setTimeout(() => {
-        playMusic(channel, client);
-    }, randomInterval);
-};
+
 
 const setNicknameOfJoinedMember = (member: GuildMember, client: TClient) => {
     if (member.kickable) {
@@ -77,8 +67,10 @@ const event = {
         if (newState.member?.user.bot || oldState.member?.user.bot) return;
         if (!oldState?.channel?.id && !client.busy) {
             const channel = newState.channel;
-            if (!(channel && newState.member)) return;
-            playMusic(channel, client);
+            if (!(channel && newState.member)) return; 
+            const name = introMap.get(newState.member.id);
+            const soundName = (name ? 'intros/' + name + '_intro' : 'brendon') + '.mp3'; 
+            connectToVoiceChannel(channel, client, '/../../sounds/' + soundName);
             setNicknameOfJoinedMember(newState.member, client);
         }
     },
