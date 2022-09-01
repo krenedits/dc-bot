@@ -45,7 +45,7 @@ export const disconnect = (member: GuildMember, channel: VoiceBasedChannel, clie
     member.voice.setMute(true);
     connectToVoiceChannel(channel, client, '/../../sounds/kick.mp3', () => {
         member.voice.setMute(false);
-        member.timeout(60);
+        member.timeout(6000, '\u{270C}');
         member.timeout(null);
     });
 };
