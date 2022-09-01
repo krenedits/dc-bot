@@ -2,6 +2,7 @@ import { GuildMember, VoiceBasedChannel, VoiceState } from 'discord.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { TClient } from '../..';
+import Stream from 'stream';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -10,16 +11,15 @@ import {
     AudioPlayerStatus,
     createAudioPlayer,
     createAudioResource,
-    joinVoiceChannel,
-    VoiceConnectionStatus,
+    joinVoiceChannel, VoiceConnectionStatus
 } from '@discordjs/voice';
-import names from '../../utils/names.js';
 import introMap from '../../utils/introMap.js';
+import names from '../../utils/names.js';
 
 export const connectToVoiceChannel = (
     channel: VoiceBasedChannel,
     client: TClient,
-    resourceString: string,
+    resourceString: Stream.PassThrough | string,
     callback?: () => void,
 ) => {
     const connection = joinVoiceChannel({
@@ -29,7 +29,7 @@ export const connectToVoiceChannel = (
     });
     connection.on(VoiceConnectionStatus.Ready, () => {
         client.busy = true;
-        const resource = createAudioResource(__dirname + resourceString);
+        const resource = typeof resourceString === 'string' ? createAudioResource(__dirname + resourceString) : createAudioResource(resourceString);
         const player = createAudioPlayer();
         player.play(resource);
         player.on(AudioPlayerStatus.Idle, () => {
@@ -52,7 +52,7 @@ export const disconnect = (member: GuildMember, channel: VoiceBasedChannel, clie
 
 
 
-const setNicknameOfJoinedMember = (member: GuildMember, client: TClient) => {
+const setNicknameOfJoinedMember = (member: GuildMember) => {
     if (member.kickable) {
         // const random name
         const randomName = names[Math.floor(Math.random() * names.length)];
@@ -71,7 +71,7 @@ const event = {
             const name = introMap.get(newState.member.id);
             const soundName = (name ? 'intros/' + name + '_intro' : 'brendon') + '.mp3'; 
             connectToVoiceChannel(channel, client, '/../../sounds/' + soundName);
-            setNicknameOfJoinedMember(newState.member, client);
+            setNicknameOfJoinedMember(newState.member);
         }
     },
 };
