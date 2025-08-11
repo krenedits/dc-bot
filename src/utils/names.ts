@@ -71,7 +71,6 @@ const names = [
     'atatürk',
     'szekuriti',
     'kórcsi',
-    'ló az ukrán csajon akit kórcsi eltemetett',
     '﷽﷽﷽﷽﷽﷽﷽',
     '5dik fehér monszter',
     '䲜䲜䲜䲜䲜䲜䲜䲜䲜䲜䲜',
