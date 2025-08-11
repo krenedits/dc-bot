@@ -6,6 +6,8 @@ const introMap = new Map([
     ['693452227209199657', 'Peti'],
     ['191945629814095872', 'Viktor'],
     ['191169823068258304', 'Csabi'],
+    ['344754672864722964', 'Robi'],
 ]);
 
 export default introMap;
+
