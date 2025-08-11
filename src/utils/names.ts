@@ -35,6 +35,8 @@ const names = [
     'Fefe faterja a veresi tóban',
     'Sárosi Laci bá',
     'M. Mátyás',
+    'Edi Andre'
 ];
 
 export default names;
+
